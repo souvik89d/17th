@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Ayesha!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #fff5f5, #f8f0ff);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow-x: hidden;
+            touch-action: manipulation;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* Floating Balloons */
+        .balloon {
+            position: absolute;
+            width: 60px;
+            height: 80px;
+            border-radius: 50%;
+            z-index: -1;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-100px) rotate(5deg); }
+        }
+
+        /* Falling Hearts */
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            color: #ff6b91;
+            z-index: -1;
+            animation: heartFall linear infinite;
+        }
+
+        @keyframes heartFall {
+            0% { transform: translateY(-10vh) rotate(0deg); }
+            100% { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        /* Main Container */
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(255, 182, 193, 0.3);
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Header */
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            color: #d65db1;
+            font-size: 2rem;
+            margin-bottom: 15px;
+            animation: fadeIn 1s ease;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Message */
+        .message {
+            font-size: 1rem;
+            color: #666;
+            line-height: 1.6;
+            margin: 15px 0;
+            padding: 0 10px;
+        }
+
+        /* 9:16 Photo Frame */
+        .photo-container {
+            position: relative;
+            width: 100%;
+            margin: 20px auto;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            aspect-ratio: 9/16;
+            background: #f8f0ff;
+        }
+
+        .photo-frame {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .photo-message {
+            position: absolute;
+            bottom: -100%;
+            left: 0;
+            right: 0;
+            background: rgba(214, 93, 177, 0.9);
+            color: white;
+            padding: 12px;
+            font-size: 0.9rem;
+            transition: bottom 0.3s ease;
+        }
+
+        .photo-container:active .photo-frame {
+            transform: scale(0.98);
+        }
+
+        .photo-container:hover .photo-message,
+        .photo-container:active .photo-message {
+            bottom: 0;
+        }
+
+        /* Button */
+        .surprise-btn {
+            background: linear-gradient(45deg, #d65db1, #ff6b91);
+            border: none;
+            color: white;
+            padding: 12px 25px;
+            font-size: 1rem;
+            border-radius: 30px;
+            cursor: pointer;
+            margin-top: 15px;
+            width: 80%;
+            max-width: 250px;
+            box-shadow: 0 4px 15px rgba(214, 93, 177, 0.4);
+            transition: all 0.3s;
+        }
+
+        .surprise-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(214, 93, 177, 0.5);
+        }
+
+        .surprise-btn:active {
+            transform: translateY(1px);
+        }
+
+        /* Music Control */
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            font-size: 1rem;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .music-control.visible {
+            opacity: 1;
+        }
+
+        /* Notification Popup */
+        .notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            max-width: 300px;
+            width: 90%;
+            text-align: center;
+            display: none;
+            animation: popIn 0.4s ease;
+        }
+
+        @keyframes popIn {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        .notification h2 {
+            color: #d65db1;
+            margin-bottom: 15px;
+        }
+
+        .notification p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .notification-btn {
+            background: #d65db1;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            opacity: 0.7;
+            animation: fall linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg); }
+            100% { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Responsive */
+        @media (min-width: 768px) {
+            .container {
+                padding: 30px;
+                max-width: 450px;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Balloons -->
+    <div id="balloons-container"></div>
+    
+    <!-- Falling Hearts -->
+    <div id="hearts-container"></div>
+    
+    <!-- Confetti -->
+    <div id="confetti-container"></div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1>🎉 Happy Birthday Ayesha! 🎂</h1>
+        
+        <div class="message">
+            Tumhari muskurahat meri duniya roshan karti hai. Janmdin mubarak ho 💖
+        </div>
+        
+        <div class="photo-container" id="birthdayPhoto">
+            <img src="img/img.11.jpg" alt="Ayesha" class="photo-frame">
+            <div class="photo-message">Yeh pal hamesha yaadgar rahenge...</div>
+        </div>
+        
+        <button class="surprise-btn" id="surpriseBtn">Click for surprise 🎁</button>
+    </div>
+
+    <!-- Music Control -->
+    <div class="music-control" id="musicControl">♫</div>
+
+    <!-- Notification Popup -->
+    <div class="notification" id="notification">
+        <h2>For My Special Mansi 💝</h2>
+        <p> Abhi toh kuch hamari achi khasi bani toh nai hai firbhi  aap mere msg ignore karte nai hoo isliye yeh chota effort mera taraf se apko  Wishing you the happiest birthday ever!</p>
+        <button class="notification-btn" id="closeNotification">Okay</button>
+    </div>
+
+    <!-- Audio -->
+    <audio id="birthdayMusic" loop>
+        <source src="music/r.1.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // Elements
+        const music = document.getElementById('birthdayMusic');
+        const musicControl = document.getElementById('musicControl');
+        const photo = document.getElementById('birthdayPhoto');
+        const surpriseBtn = document.getElementById('surpriseBtn');
+        const notification = document.getElementById('notification');
+        const closeNotification = document.getElementById('closeNotification');
+        
+        let isPlaying = false;
+        let musicStarted = false;
+
+        // Create floating balloons
+        function createBalloons() {
+            const colors = ['#ffb6c1', '#ffd7e0', '#d65db1', '#ff6b91', '#f9c5d1'];
+            const container = document.getElementById('balloons-container');
+            
+            for (let i = 0; i < 8; i++) {
+                const balloon = document.createElement('div');
+                balloon.className = 'balloon';
+                balloon.style.left = Math.random() * 100 + 'vw';
+                balloon.style.bottom = Math.random() * 100 + 'px';
+                balloon.style.background = colors[Math.floor(Math.random() * colors.length)];
+                balloon.style.animationDuration = Math.random() * 5 + 5 + 's';
+                balloon.style.animationDelay = Math.random() * 3 + 's';
+                container.appendChild(balloon);
+            }
+        }
+
+        // Create falling hearts
+        function createHearts() {
+            const container = document.getElementById('hearts-container');
+            
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = Math.random() * 5 + 5 + 's';
+                heart.style.animationDelay = Math.random() * 3 + 's';
+                container.appendChild(heart);
+            }
+        }
+
+        // Create confetti
+        function createConfetti() {
+            const colors = ['#ffb6c1', '#ffd7e0', '#d65db1', '#ff6b91'];
+            const container = document.getElementById('confetti-container');
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.animationDuration = Math.random() * 3 + 3 + 's';
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                container.appendChild(confetti);
+            }
+        }
+
+        // Start music function
+        function startMusic() {
+            if (!musicStarted) {
+                music.play()
+                    .then(() => {
+                        isPlaying = true;
+                        musicControl.textContent = '❚❚';
+                        musicControl.classList.add('visible');
+                        createConfetti();
+                    })
+                    .catch(e => {
+                        console.log("Autoplay prevented:", e);
+                        musicControl.classList.add('visible');
+                    });
+                musicStarted = true;
+            }
+        }
+
+        // Click on photo starts music
+        photo.addEventListener('click', startMusic);
+
+        // Click anywhere on page starts music
+        document.addEventListener('click', function initMusic() {
+            startMusic();
+            document.removeEventListener('click', initMusic);
+        }, { once: true });
+
+        // Music control button
+        musicControl.addEventListener('click', function() {
+            if (isPlaying) {
+                music.pause();
+                musicControl.textContent = '♫';
+            } else {
+                music.play();
+                musicControl.textContent = '❚❚';
+            }
+            isPlaying = !isPlaying;
+        });
+
+        // Surprise button shows notification
+        surpriseBtn.addEventListener('click', function() {
+            notification.style.display = 'block';
+            createConfetti();
+        });
+
+        // Close notification
+        closeNotification.addEventListener('click', function() {
+            notification.style.display = 'none';
+        });
+
+        // Initialize
+        createBalloons();
+        createHearts();
+    </script>
+</body>
+</html>
